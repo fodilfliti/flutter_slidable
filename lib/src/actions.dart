@@ -24,6 +24,7 @@ class CustomSlidableAction extends StatelessWidget {
     this.foregroundColor,
     this.autoClose = _kAutoClose,
     this.borderRadius = BorderRadius.zero,
+    this.borderSide = BorderSide.none,
     this.padding,
     required this.onPressed,
     required this.child,
@@ -75,6 +76,13 @@ class CustomSlidableAction extends StatelessWidget {
   /// {@endtemplate}
   final BorderRadius borderRadius;
 
+  /// {@template slidable.actions.borderSide}
+  /// The borderSide of this action
+  ///
+  /// Defaults to [BorderSide.none].
+  /// {@endtemplate}
+  final BorderSide borderSide;
+
   /// {@template slidable.actions.padding}
   /// The padding of the OutlinedButton
   /// {@endtemplate}
@@ -104,7 +112,7 @@ class CustomSlidableAction extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: borderRadius,
             ),
-            side: BorderSide.none,
+            side: borderSide,
           ),
           child: child,
         ),
@@ -130,19 +138,21 @@ class SlidableAction extends StatelessWidget {
   /// You must set either an [icon] or a [label].
   ///
   /// The [flex] argument must also be greater than 0.
-  const SlidableAction({
-    Key? key,
-    this.flex = _kFlex,
-    this.backgroundColor = _kBackgroundColor,
-    this.foregroundColor,
-    this.autoClose = _kAutoClose,
-    required this.onPressed,
-    this.icon,
-    this.spacing = 4,
-    this.label,
-    this.borderRadius = BorderRadius.zero,
-    this.padding,
-  })  : assert(flex > 0),
+  const SlidableAction(
+      {Key? key,
+      this.flex = _kFlex,
+      this.backgroundColor = _kBackgroundColor,
+      this.foregroundColor,
+      this.autoClose = _kAutoClose,
+      required this.onPressed,
+      this.icon,
+      this.spacing = 4,
+      this.label,
+      this.borderRadius = BorderRadius.zero,
+      this.borderSide = BorderSide.none,
+      this.padding,
+      this.iconWidget})
+      : assert(flex > 0),
         assert(icon != null || label != null),
         super(key: key);
 
@@ -164,6 +174,10 @@ class SlidableAction extends StatelessWidget {
   /// An icon to display above the [label].
   final IconData? icon;
 
+  /// An icon widget to display above the [label].
+
+  final Widget? iconWidget;
+
   /// The space between [icon] and [label] if both set.
   ///
   /// Defaults to 4.
@@ -175,6 +189,9 @@ class SlidableAction extends StatelessWidget {
   /// Padding of the OutlinedButton
   final BorderRadius borderRadius;
 
+  /// The borderSide of this action
+  final BorderSide borderSide;
+
   /// Padding of the OutlinedButton
   final EdgeInsets? padding;
 
@@ -184,7 +201,7 @@ class SlidableAction extends StatelessWidget {
 
     if (icon != null) {
       children.add(
-        Icon(icon),
+        iconWidget ?? Icon(icon),
       );
     }
 
@@ -219,6 +236,7 @@ class SlidableAction extends StatelessWidget {
     return CustomSlidableAction(
       borderRadius: borderRadius,
       padding: padding,
+      borderSide: borderSide,
       onPressed: onPressed,
       autoClose: autoClose,
       backgroundColor: backgroundColor,
